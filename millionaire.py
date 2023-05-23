@@ -16,10 +16,8 @@ class Game:
 
         # Randomizing questions from a given level
         for lvl in self.dict['games']:
-            #print(lvl['questions'])
             shuffle(lvl['questions'])
-            #print(len(lvl['questions']))
-            #print(lvl['questions'])
+
 
         self.name = input('What is your name: ')
         # Levels of win
@@ -38,18 +36,14 @@ class Game:
                 if self.q not in self.three_questions:
                     self.three_questions.append(self.q)
 
-        #print(f'Trzy pytania: {self.three_questions}')
-        #print(f'Tura: {turn}\tPoziom pytania: {self.lvl_q}\n')
 
     def asking_question(self, turn):
-        #print(f'Index pytania: {self.nr_of_question}')
         print(self.three_questions[self.nr_of_question]['question'])
         print(f'A : {self.three_questions[self.nr_of_question]["content"][0]}')
         print(f'B : {self.three_questions[self.nr_of_question]["content"][1]}')
         print(f'C : {self.three_questions[self.nr_of_question]["content"][2]}')
         print(f'D : {self.three_questions[self.nr_of_question]["content"][3]}')
         self.answer_of_gamer = inputChoice(('A', 'B', 'C', 'D', 'pass', 'new', '50'), prompt='').upper()
-        #print(f'Odpowiedz moja: {self.answer_of_gamer}')
 
         # If answer is correct
         if ((self.answer_of_gamer == 'A' and self.three_questions[self.nr_of_question]["correct"] == 0) or (self.answer_of_gamer == 'B' and self.three_questions[self.nr_of_question]["correct"] == 1) or
@@ -57,10 +51,12 @@ class Game:
             self.win_balance = self.levels[turn]
             print(f'Correct answer - Your current win = {self.win_balance}$')
             self.nr_of_question += 1
+
         # If the player gives up - Game over
         elif self.answer_of_gamer == 'PASS':
             print(f'You win {self.win_balance}$')
             self.the_end = 0
+
         # Changing the question
         elif self.answer_of_gamer == 'NEW':
             if self.answer_of_gamer in self.tips:
@@ -70,18 +66,19 @@ class Game:
             else:
                 print(f'You do not have this tip')
                 game.asking_question(turn)
+
         # Deletion of two answers
         elif self.answer_of_gamer == '50':
             if self.answer_of_gamer in self.tips:
                 self.tips.remove('50')
                 # Loop until two incorrect answers are removed
                 while self.three_questions[self.nr_of_question]["content"].count('') < 2:
-                    #self.random_answer = choice(self.three_questions[self.nr_of_question]["content"])
                     self.random_index = choice(range(4))
                     if self.three_questions[self.nr_of_question]["correct"] != self.random_index:
                         self.three_questions[self.nr_of_question]["content"][self.random_index] = ''
             else: print(f'You do not have this tip')
             game.asking_question(turn)
+
         # If answer incorrect - Game over
         else:
             print(f'Answer incorrect - You lose {self.win_balance}$')
